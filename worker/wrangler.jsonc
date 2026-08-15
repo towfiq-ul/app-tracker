@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "application-users-tracker-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Two separate databases on purpose: a leak or bug on one side (e.g. the applications
+  // config, which holds encrypted per-app tokens) should never expose the other (admin
+  // credentials and sessions). Populated by `wrangler d1 create <name>` — placeholders
+  // until that's run.
+  "d1_databases": [
+    {
+      "binding": "AUTH_DB",
+      "database_name": "users_tracker_auth",
+      "database_id": "398b5ab7-0943-4ae5-944b-dd8d84d48e67"
+    },
+    {
+      "binding": "APPS_DB",
+      "database_name": "users_tracker_apps",
+      "database_id": "8805bdf0-6aa4-4463-8908-e8b9e5cc2637"
+    }
+  ],
+
+  // Master key used to encrypt/decrypt per-application API tokens (worker/src/crypto.ts).
+  // Store: "application-users-tracker" (created via `wrangler secrets-store store create`).
+  "secrets_store_secrets": [
+    {
+      "binding": "MASTER_KEY",
+      "store_id": "2c2685b0b7aa4b06be48c1476948189c",
+      "secret_name": "app-token-master-key"
+    }
+  ],
+
+  // Production origin — the deployed GitHub Pages site. Local dev overrides this via
+  // worker/.dev.vars (gitignored), which wrangler dev prefers over this value.
+  "vars": {
+    "ALLOWED_ORIGIN": "https://towfiq-ul.github.io"
+  }
+}

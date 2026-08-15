@@ -1,0 +1,495 @@
+:root {
+  --paper: #f6f6f6;
+  --surface: #ffffff;
+  --ink: #000000;
+  --ink-soft: #6e6e6e;
+  --line: #dddddd;
+  --accent: #000000;
+  --accent-contrast: #ffffff;
+  --good: #1a7f37;
+  --good-bg: #e6f4ea;
+  --bad: #c53030;
+  --bad-bg: #fdeceb;
+  --warn: #9a6700;
+  --warn-bg: #fff6dc;
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+}
+a:hover { opacity: 0.65; }
+
+button {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: 6px;
+  padding: 9px 16px;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.5; cursor: default; }
+button:hover:not(:disabled) { opacity: 0.85; }
+
+/* --- auth screen --- */
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 32px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.auth-card h1 { font-size: 19px; margin: 0 0 4px; }
+.auth-title { display: flex; align-items: center; gap: 10px; }
+
+/* --- app shell --- */
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink);
+  text-decoration: none;
+}
+/* --- nav pills (mirrors the dashboard card's surface/border/radius language) --- */
+.nav-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.nav-pill:hover { color: var(--ink); opacity: 1; border-color: var(--line); }
+.nav-pill-active { color: var(--accent-contrast); background: var(--accent); }
+.nav-pill-active:hover { color: var(--accent-contrast); }
+
+.app-header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.app-user { color: var(--ink); font-size: 14px; font-weight: 600; white-space: nowrap; }
+
+/* --- user menu (username dropdown: Profile, Sign out) --- */
+.user-menu { position: relative; }
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px 5px 6px;
+}
+.user-menu-trigger:hover:not(:disabled) { opacity: 1; border-color: var(--ink); }
+.user-menu-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.user-menu-caret { font-size: 11px; color: var(--ink-soft); transition: transform 0.15s ease; }
+.user-menu-caret-open { transform: rotate(180deg); }
+.user-menu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1500;
+  animation: dialog-card-in 0.15s ease;
+}
+.user-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: var(--ink);
+  text-decoration: none;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.user-menu-item:hover { background: var(--paper); opacity: 1; }
+.user-menu-item-danger { color: var(--bad); }
+.app-main { padding: 20px 16px; max-width: 1280px; width: 100%; margin: 0 auto; }
+/* The user-list table wants every pixel of the viewport, not the normal reading-width cap. */
+.app-main-wide { max-width: none; }
+
+@media (min-width: 640px) {
+  .app-header { padding: 14px 24px; gap: 24px; }
+  .app-main { padding: 28px 24px; }
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.page-heading h1 { margin: 0; font-size: 22px; }
+
+.page-status { color: var(--ink-soft); }
+.page-status-error { color: var(--bad); font-weight: 600; }
+.page-status-warning { color: var(--warn); font-weight: 600; }
+
+/* --- forms --- */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  min-width: 0;
+}
+input, select, textarea {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: var(--surface);
+  color: var(--ink);
+  width: 100%;
+  min-width: 0;
+}
+.form-error {
+  color: var(--bad);
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--bad);
+}
+.form-warning {
+  color: var(--warn);
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--warn);
+}
+.form-row { display: grid; grid-template-columns: 1fr; gap: 16px; }
+
+.application-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.field-schema-editor {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.field-schema-editor legend { padding: 0 6px; color: var(--ink-soft); font-size: 13px; }
+
+.field-schema-row-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.field-schema-row-wrap:last-of-type { padding-bottom: 0; border-bottom: none; }
+.field-schema-row-wrap.dragging { opacity: 0.4; }
+.field-drag-handle {
+  flex-shrink: 0;
+  align-self: center;
+  cursor: grab;
+  color: var(--ink-soft);
+  padding: 4px 2px;
+  user-select: none;
+  touch-action: none;
+  line-height: 1;
+}
+.field-drag-handle:active { cursor: grabbing; }
+
+/* Mobile-first: key+label on one line, type+remove on the next — nothing here has a
+   fixed px width, so it can never push wider than its container the way a rigid
+   4-column row does. */
+.field-schema-row {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "key       label"
+    "type      editable"
+    "primary   remove";
+  gap: 8px;
+}
+.field-key { grid-area: key; min-width: 0; }
+.field-label { grid-area: label; min-width: 0; }
+.field-type { grid-area: type; min-width: 0; }
+.field-editable, .field-primary-key {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.field-editable input, .field-primary-key input { width: auto; }
+.field-editable { grid-area: editable; }
+.field-primary-key { grid-area: primary; }
+.field-remove {
+  grid-area: remove;
+  justify-self: end;
+  align-self: center;
+  background: transparent;
+  color: var(--ink-soft);
+  padding: 4px 10px;
+}
+
+@media (min-width: 560px) {
+  .form-row { grid-template-columns: 1fr 1fr; }
+  .application-form { padding: 24px; }
+  .field-schema-editor { padding: 14px; }
+  .field-schema-row-wrap { padding-bottom: 0; border-bottom: none; }
+  .field-schema-row {
+    grid-template-columns: 1.3fr 1.3fr 120px 90px 100px 32px;
+    grid-template-areas: "key label type editable primary remove";
+    align-items: center;
+    gap: 10px;
+  }
+  .field-remove { padding: 4px; }
+}
+
+/* --- dashboard cards --- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.app-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.app-card:hover { border-color: var(--ink); opacity: 1; }
+.app-card h2 { margin: 0; font-size: 16px; }
+.app-card-meta { color: var(--ink-soft); font-size: 13px; }
+
+.empty-state { color: var(--ink-soft); display: flex; flex-direction: column; gap: 8px; }
+
+/* --- tables --- */
+.table-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+/* Fixed layout + width:100% caps the table at the container's width no matter how many
+   columns there are (up to the 12-field schema cap) — columns share that width evenly
+   instead of the table growing past it and needing a horizontal scrollbar. Long values wrap
+   onto extra lines (rather than truncating with an ellipsis) so nothing is ever hidden. */
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  vertical-align: top;
+}
+th { color: var(--ink-soft); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; position: sticky; top: 0; background: var(--surface); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+/* Fixed narrow width so the row-number column doesn't eat an even share of the table's
+   width the way every data column does under table-layout: fixed. */
+.col-sl { width: 48px; color: var(--ink-soft); text-align: right; }
+.row-actions { display: flex; gap: 14px; align-items: center; }
+.row-actions button { background: transparent; color: var(--ink-soft); padding: 0; text-decoration: underline; }
+.cell-empty { color: var(--ink-soft); }
+.editable-cell { display: flex; align-items: flex-start; gap: 6px; }
+.cell-input {
+  padding: 5px 6px;
+  font-size: 13px;
+  width: 100%;
+}
+.cell-input[type="date"] { min-width: 130px; }
+.cell-input[type="datetime-local"] { min-width: 190px; }
+.cell-input:disabled { opacity: 0.6; }
+/* Grows with its content via JS (see autoResizeTextarea) instead of showing its own
+   scrollbar — the value stays fully visible the same way a read-only cell wraps. */
+.cell-textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 32px;
+  line-height: 1.4;
+  font-family: inherit;
+}
+.cell-error { color: var(--bad); cursor: help; }
+
+/* Boolean toggle: red tip when off, green tip when on — the one other place (besides
+   .pill) where color alone carries meaning here, so keep everything else monochrome. */
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bad-bg);
+  flex-shrink: 0;
+}
+.toggle-switch.toggle-on { background: var(--good-bg); }
+.toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bad);
+  transition: left 0.15s ease, background 0.15s ease;
+}
+.toggle-switch.toggle-on .toggle-knob { left: 20px; background: var(--good); }
+.toggle-switch:disabled { opacity: 0.6; cursor: default; }
+
+/* --- toasts --- */
+.toast-stack {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  max-width: calc(100vw - 40px);
+}
+.toast {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  animation: toast-in 0.15s ease;
+}
+.toast-success { background: var(--good-bg); color: var(--good); }
+.toast-error { background: var(--bad-bg); color: var(--bad); }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Active/inactive status is the one place color carries meaning — everything else stays
+   monochrome so this stands out. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill-good { background: var(--good-bg); color: var(--good); }
+.pill-bad { background: var(--bad-bg); color: var(--bad); }
+
+/* --- confirm dialog --- */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 2000;
+  animation: dialog-backdrop-in 0.15s ease;
+}
+.dialog-card {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  animation: dialog-card-in 0.15s ease;
+}
+.dialog-card h2 { margin: 0; font-size: 18px; }
+.dialog-card p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.5; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+.dialog-cancel { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.dialog-cancel:hover:not(:disabled) { opacity: 1; border-color: var(--ink); }
+.dialog-confirm.dialog-danger { background: var(--bad); }
+@keyframes dialog-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dialog-card-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

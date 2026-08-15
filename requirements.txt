@@ -1,0 +1,7 @@
+1. make a portal for checking user list for a specific application
+2. it will use a admin login which will be validated from cloudflare db/proxy url
+3. there should be feature to add several application from ui
+4. for specific apllication user list will be retrived from configured cloudflare db 
+5. userflow -> hit portal url(github page based) -> login screen -> validate from cloudflare-> dashborad -> application list, settings(application name, config url, etc).
+6. application list-> x application -> user list (configured field, active(boolean))
+7. settings -> configurable form (application name, cloudflare data source url, credeantials) -> save to cloudflare db 
