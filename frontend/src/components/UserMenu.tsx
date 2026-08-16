@@ -31,6 +31,8 @@ export function UserMenu() {
 
   if (!admin) return null;
 
+  const displayName = admin.name || admin.email || admin.username;
+
   return (
     <div className="user-menu" ref={rootRef}>
       <button
@@ -41,9 +43,9 @@ export function UserMenu() {
         aria-expanded={open}
       >
         <span className="user-menu-avatar" aria-hidden="true">
-          {admin.username.slice(0, 1).toUpperCase()}
+          {displayName.slice(0, 1)}
         </span>
-        <span className="app-user">{admin.username}</span>
+        <span className="app-user">{displayName}</span>
         <span className={`user-menu-caret ${open ? "user-menu-caret-open" : ""}`} aria-hidden="true">
           ▾
         </span>

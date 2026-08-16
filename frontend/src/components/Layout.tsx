@@ -29,6 +29,10 @@ export function Layout() {
   // centered reading width.
   const isUserTablePage = /^\/applications\/\d+/.test(pathname);
 
+  // The dashboard already shows every nav destination as a card, so the pill nav would
+  // just be a redundant second copy of the same links on that one page.
+  const isDashboardPage = pathname === "/dashboard";
+
   const navItems = [
     { to: "/applications", label: "Applications" },
     { to: "/settings", label: "Settings" },
@@ -42,17 +46,19 @@ export function Layout() {
           <Logo size={22} />
           Application Tracker
         </Link>
-        <nav className="nav-pills">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) => `nav-pill ${isActive ? "nav-pill-active" : ""}`}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
+        {!isDashboardPage && (
+          <nav className="nav-pills">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) => `nav-pill ${isActive ? "nav-pill-active" : ""}`}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        )}
         <div className="app-header-right">
           <UserMenu />
         </div>
